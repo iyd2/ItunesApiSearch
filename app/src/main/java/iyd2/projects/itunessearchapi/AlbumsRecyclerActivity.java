@@ -6,10 +6,13 @@ import android.os.Bundle;
 
 /**
  * Launch activity.
- * Hosts AlbumsRecyclerFragment.
+ * Activity class for hosting AlbumsRecyclerFragment.
  */
 public class AlbumsRecyclerActivity extends SingleFragmentActivity {
 
+	/**
+	 * Returns fragment object, that will be hosted in activity.
+	 */
     @Override
     protected Fragment createFragment() {
         return AlbumsRecyclerFragment.newInstance();

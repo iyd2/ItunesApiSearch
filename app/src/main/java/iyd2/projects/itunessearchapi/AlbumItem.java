@@ -3,6 +3,7 @@ package iyd2.projects.itunessearchapi;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,24 +28,28 @@ public class AlbumItem implements Comparable<AlbumItem>, Serializable {
     private String collectionName;
     private String artistName;
     private String imageUrl;
-    private int price;
+    private String price;
     private String currency;
     private String contentAdvisoryRating;
     private String collectionExplicitness;
-    private int trackCount;
+    private String trackCount;
     private String copyright;
     private String country;
     private String genre;
     private Date releaseDate;
-
     private List<String> listOfSongs;
 
+    /**
+     * Album constructor.
+     */
     public AlbumItem(String collectionId, String collectionName, String artistName, String imageUrl) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.artistName = artistName;
         this.imageUrl = imageUrl;
     }
+
+    // Getters and setters.
 
     public String getCollectionId() {
         return collectionId;
@@ -86,11 +91,11 @@ public class AlbumItem implements Comparable<AlbumItem>, Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -118,11 +123,11 @@ public class AlbumItem implements Comparable<AlbumItem>, Serializable {
         this.collectionExplicitness = collectionExplicitness;
     }
 
-    public int getTrackCount() {
+    public String getTrackCount() {
         return trackCount;
     }
 
-    public void setTrackCount(int trackCount) {
+    public void setTrackCount(String trackCount) {
         this.trackCount = trackCount;
     }
 
@@ -150,14 +155,6 @@ public class AlbumItem implements Comparable<AlbumItem>, Serializable {
         this.genre = genre;
     }
 
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
     public List<String> getListOfSongs() {
         return listOfSongs;
     }
@@ -166,60 +163,52 @@ public class AlbumItem implements Comparable<AlbumItem>, Serializable {
         this.listOfSongs = listOfSongs;
     }
 
-    public boolean fillFromJson() {
-
-        if (jsonData == null) {
-            return false;
-        }
-
-        try {
-            JSONObject jsonObject = new JSONObject(jsonData);
-
-            String imageUrl = jsonObject.getString("artworkUrl100").replace("100x100bb", "600x600bb");
-
-            if (!isUrlValid(imageUrl)) {
-                return false;
-            }
-
-            this.collectionId = jsonObject.getString("collectionId");
-            this.collectionName = jsonObject.getString("collectionName");
-            this.artistName = jsonObject.getString("artistName");
-            this.imageUrl = imageUrl;
-
-        } catch (JSONException e) {
-            return false;
-        }
-
-        return true;
+    public Date getReleaseDate() {
+        return releaseDate;
     }
 
-    public boolean fillFromJsonFull() {
-        if (!fillFromJson()) {
-            return false;
-        }
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
 
+    /**
+     * Setter that parses release date from given String.
+     */
+	public void setReleaseDate(String releaseDateString) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
-            JSONObject jsonObject = new JSONObject(jsonData);
-            this.price = jsonObject.getInt("collectionPrice");
-            this.currency = jsonObject.getString("currency");
-            this.contentAdvisoryRating = jsonObject.getString("contentAdvisoryRating");
-            this.collectionExplicitness = jsonObject.getString("collectionExplicitness");
-            this.trackCount = jsonObject.getInt("trackCount");
-            this.copyright = jsonObject.getString("copyright");
-            this.country = jsonObject.getString("country");
-            this.genre = jsonObject.getString("primaryGenreName");
-
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            this.releaseDate = format.parse(jsonObject.getString("releaseDate"));
-            //TODO:releaseDate
-        } catch (JSONException e) {
-            return false;
+            this.releaseDate = format.parse(releaseDateString);
         } catch (ParseException e) {
-            return false;
+            Log.e(TAG, e.getMessage());
         }
-
-        return true;
     }
+
+    /**
+     * Returns concatenated by blank String of price and currency.
+     */
+    public String getPriceWithCurrency() {
+        return new StringBuilder(getTextValue(this.price)).append(" ").append(getTextValue(this.currency)).toString();
+    }
+
+    /**
+     * Returns String value safely.
+     */
+    private String getTextValue(String value) {
+        return value == null ? "" : value;
+    }
+
+    /**
+     * Returns release date without time as String.
+     */
+    public String getDisplayedDateString() {
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        if (this.getReleaseDate() != null) {
+            return new StringBuilder("Release: ").append(format.format(this.getReleaseDate())).toString();
+        } else {
+            return "";
+        }
+    }
+
 
     @Override
     public int compareTo(@NonNull AlbumItem albumItem) {
@@ -240,15 +229,5 @@ public class AlbumItem implements Comparable<AlbumItem>, Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(collectionId, collectionName, artistName, imageUrl);
-    }
-
-    private boolean isUrlValid(String urlSpec) {
-
-        try {
-            new URL(urlSpec);
-            return true;
-        } catch (MalformedURLException e) {
-            return false;
-        }
     }
 }

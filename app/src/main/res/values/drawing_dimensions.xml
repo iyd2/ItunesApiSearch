@@ -3,5 +3,6 @@
     <dimen name="item_margin">16dp</dimen>
     <dimen name="detail_main_margin">16dp</dimen>
     <dimen name="detail_side_margin">8dp</dimen>
+    <dimen name="album_card_margin">4dp</dimen>
     <dimen name="number_width">24dp</dimen>
 </resources>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_margin="@dimen/detail_main_margin">
 
@@ -27,12 +27,14 @@
                 <TextView
                     android:id="@+id/album_title"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    style="@style/TextView.Black.Bold"/>
 
                 <TextView
                     android:id="@+id/artist_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    style="@style/TextView.Black"/>
 
                 <TextView
                     android:id="@+id/genre"
@@ -42,7 +44,8 @@
                 <TextView
                     android:id="@+id/price"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    style="@style/TextView.Black.Italic"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -63,7 +66,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginBottom="@dimen/detail_main_margin">
 
@@ -71,13 +74,14 @@
                 android:id="@+id/release_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/detail_side_margin"/>
+                android:layout_marginBottom="@dimen/detail_side_margin"
+                style="@style/TextView.Black"/>
 
             <TextView
                 android:id="@+id/copyrights"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/detail_side_margin"/>
+                android:layout_marginBottom="@dimen/detail_side_margin" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
